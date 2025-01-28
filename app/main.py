@@ -1,13 +1,18 @@
-from fastapi import FastAPI, Response, status, HTTPException
+from fastapi import FastAPI, Response, status, HTTPException, Depends
 from pydantic import BaseModel
 from typing import Optional
 from random import randrange
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
+from . import models
+from .database import engine, get_db
+from sqlalchemy.orm import Session
 
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
 
 
 # The schema
@@ -76,3 +81,9 @@ def update_post(id: int, post: Post):
     if updated_post == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Post with id {id} was not found')
     return {"data": updated_post}
+
+
+@app.get('/sqlalchemy/posts')
+def test_posts(db: Session = Depends(get_db)):
+    posts = db.query(models.Post).all()
+    return posts
