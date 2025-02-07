@@ -3,25 +3,6 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 
-class PostBase(BaseModel):
-    title: str
-    content: str
-    published: bool = True
-
-
-class PostCreate(PostBase):
-    pass
-
-
-class PostResponse(PostBase):
-    id: int
-    user_id: int
-    created_at: datetime
-
-    class Config:
-        orm_mode = True
-
-
 class UserBase(BaseModel):
     email: EmailStr
 
@@ -47,3 +28,23 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[int] = None
+
+
+class PostBase(BaseModel):
+    title: str
+    content: str
+    published: bool = True
+
+
+class PostCreate(PostBase):
+    pass
+
+
+class PostResponse(PostBase):
+    id: int
+    user_id: int
+    created_at: datetime
+    user: UserResponse
+
+    class Config:
+        orm_mode = True
