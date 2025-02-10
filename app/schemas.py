@@ -43,9 +43,17 @@ class PostCreate(PostBase):
 
 class PostResponse(PostBase):
     id: int
-    user_id: int
     created_at: datetime
+    user_id: int
     user: UserResponse
+
+    class Config:
+        orm_mode = True
+ 
+
+class PostResponseWithVotes(BaseModel):
+    Post: PostResponse
+    votes: int
 
     class Config:
         orm_mode = True
