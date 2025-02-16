@@ -75,13 +75,11 @@ The application will be available at `http://127.0.0.1:8000/docs`.
 ## API Endpoints
 
 ### Authentication
-- `POST /auth/register` - Register a new user
-- `POST /auth/login` - Login a user
+- `POST /auth/login` - Login into an existing user
 
 ### Users
+- `POST /users/` - Create a user
 - `GET /users/{user_id}` - Get user details
-- `PUT /users/{user_id}` - Update user details
-- `DELETE /users/{user_id}` - Delete a user
 
 ### Posts
 - `GET /posts` - Get all posts
