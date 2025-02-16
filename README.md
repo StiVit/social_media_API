@@ -35,11 +35,24 @@ To install the project, follow these steps:
 
 ## Configuration
 
-Before running the project, you need to configure the environment variables. Create a `.env` file in the root directory and add the following variables:
+Before running the project, you need to configure the environment variables.
+
+**Copy the template file to create a new `.env` file:**
+```bash
+cp .env.template .env
+```
+
+Set up all your environmental variables
 
 ```
-DATABASE_URL=your_database_url
-SECRET_KEY=your_secret_key
+DATABASE_HOSTNAME=
+DATABASE_PORT=
+DATABASE_PASSWORD=
+DATABASE_USERNAME=
+DATABASE_NAME=
+SECRET_KEY=
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=
 DEBUG=True  # Set to False in production
 ```
 
