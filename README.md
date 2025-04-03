@@ -5,6 +5,7 @@ This is a FastAPI-based social media API that allows users to create, read, upda
 ## Table of Contents
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Docker Implementation](#docker-implementation)
 - [Running the Application](#running-the-application)
 - [API Endpoints](#api-endpoints)
 - [Database Migrations](#database-migrations)
@@ -55,6 +56,61 @@ ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=
 DEBUG=True  # Set to False in production
 ```
+
+## Docker Implementation
+
+This project includes Docker support for both development and production environments. It provides a `Dockerfile` to build the application image and two `docker-compose` files for running the application with PostgreSQL.
+
+### Building the Docker Image
+
+To build the Docker image, run the following command:
+
+```bash
+docker build -t social_media_api .
+```
+
+### Running the Application with Docker Compose
+
+#### Development Environment
+
+For development, use the `docker-compose-dev.yml` file. This setup includes the application and a PostgreSQL database.
+
+1. Start the containers:
+    ```bash
+    docker-compose -f docker-compose-dev.yml up --build
+    ```
+
+2. The application will be available at `http://127.0.0.1:8000/docs`.
+
+3. To stop the containers:
+    ```bash
+    docker-compose -f docker-compose-dev.yml down
+    ```
+
+#### Production Environment
+
+For production, use the `docker-compose-prod.yml` file. This setup is optimized for production use.
+
+1. Start the containers:
+    ```bash
+    docker-compose -f docker-compose-prod.yml up --build -d
+    ```
+
+2. To stop the containers:
+    ```bash
+    docker-compose -f docker-compose-prod.yml down
+    ```
+
+### Notes
+
+- Ensure that the `.env` file is properly configured before running the application in Docker.
+- The `docker-compose-dev.yml` file is tailored for local development with debugging enabled, while the `docker-compose-prod.yml` file is configured for production with optimizations and stricter settings.
+- You can modify the `docker-compose` files to suit your specific requirements.
+- Use `docker logs <container_name>` to view logs for debugging purposes.
+- For database migrations, you can run:
+    ```bash
+    docker exec -it <app_container_name> alembic upgrade head
+    ```
 
 ## Running the Application
 
