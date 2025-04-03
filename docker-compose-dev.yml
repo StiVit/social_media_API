@@ -1,0 +1,35 @@
+version: '3'
+services:
+  api:
+    build: .
+    depends_on:
+      - postgres # It says that firstly the postgres service should be executed before the api service
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:usr/src/app:ro # This line syncs the current directory with the container's app directory to make sure that changes in the code are reflected in the container
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    # env_file: 
+      # .env # You can specify an env file if you have one
+    environment: # Or manually specify environment variables
+      - DATABASE_HOSTNAME=postgres # This is the name of the service in the docker-compose file, we just make a reference to it
+      - DATABASE_PORT=5432
+      - DATABASE_PASSWORD=150205
+      - DATABASE_USERNAME=postgres
+      - DATABASE_NAME=fastapi
+      - SECRET_KEY=d1e7dd2123fdsafew12e2essfd13123dsfewr1rghjhi13h4jdf
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+    
+  # Create a Postgres database inside a container to make sure there is a database to connect to
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=150205
+      - POSTGRES_DB=fastapi
+    # TO save data on a container we need such thing as a volume, if we don't do this, the data will be lost when the containere is killed
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+   
+volumes:
+  postgres_db:

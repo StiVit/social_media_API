@@ -1,0 +1,33 @@
+version: '3'
+services:
+  api:
+    image: stivit/fastapi # Use the image from docker hub instead of building it
+    depends_on:
+      - postgres # It says that firstly the postgres service should be executed before the api service
+    ports:
+      - 80:8000
+    # command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    # env_file: 
+      # .env # You can specify an env file if you have one
+    environment: # Or manually specify environment variables
+      - DATABASE_HOSTNAME=${DATABASE_HOSTNAME} # This is the name of the service in the docker-compose file, we just make a reference to it
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
+    
+  # Create a Postgres database inside a container to make sure there is a database to connect to
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    # TO save data on a container we need such thing as a volume, if we don't do this, the data will be lost when the containere is killed
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+   
+volumes:
+  postgres_db:
